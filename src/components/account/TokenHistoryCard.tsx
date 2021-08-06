@@ -43,6 +43,10 @@ import {
   isBonfidaBotInstruction,
   parseBonfidaBotInstructionTitle,
 } from "components/instruction/bonfida-bot/types";
+import {
+  isMangoInstruction,
+  //parseMangoInstructionTitle,
+} from "components/instruction/mango/types";
 import { INNER_INSTRUCTIONS_START_SLOT } from "pages/TransactionDetailsPage";
 import { useCluster, Cluster } from "providers/cluster";
 import { Link } from "react-router-dom";
@@ -457,6 +461,7 @@ const TokenTransactionRow = React.memo(
           }
 
           if ("parsed" in ix) {
+            console.log('parsing');
             if (ix.program === "spl-token") {
               name = getTokenProgramInstructionName(ix, tx);
             } else {
@@ -497,12 +502,25 @@ const TokenTransactionRow = React.memo(
             isBonfidaBotInstruction(transactionInstruction)
           ) {
             try {
+              console.log('fida');
               name = parseBonfidaBotInstructionTitle(transactionInstruction);
             } catch (error) {
               reportError(error, { signature: tx.signature });
               return undefined;
             }
-          } else {
+          } else if (
+            transactionInstruction && 
+            isMangoInstruction(transactionInstruction)
+          ) {
+            try {
+              // name = parseMangoInstructionTitle(transactionInstruction);
+              name = 'mango doe';
+            } catch (error) {
+              reportError(error, { signature: tx.signature });
+              return undefined;
+            }
+          }
+              else {
             if (
               ix.accounts.findIndex((account) =>
                 account.equals(TOKEN_PROGRAM_ID)

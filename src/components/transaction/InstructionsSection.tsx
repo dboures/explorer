@@ -20,6 +20,7 @@ import { TokenSwapDetailsCard } from "components/instruction/TokenSwapDetailsCar
 import { WormholeDetailsCard } from "components/instruction/WormholeDetailsCard";
 import { UnknownDetailsCard } from "components/instruction/UnknownDetailsCard";
 import { BonfidaBotDetailsCard } from "components/instruction/BonfidaBotDetails";
+import { MangoDetailsCard } from "components/instruction/MangoDetailsCard";
 import {
   SignatureProps,
   INNER_INSTRUCTIONS_START_SLOT,
@@ -39,6 +40,7 @@ import { BpfUpgradeableLoaderDetailsCard } from "components/instruction/bpf-upgr
 import { VoteDetailsCard } from "components/instruction/vote/VoteDetailsCard";
 import { isWormholeInstruction } from "components/instruction/wormhole/types";
 import { AssociatedTokenDetailsCard } from "components/instruction/AssociatedTokenDetailsCard";
+import { isMangoInstruction } from "components/instruction/mango/types";
 
 export type InstructionDetailsProps = {
   tx: ParsedTransaction;
@@ -210,6 +212,8 @@ function renderInstructionCard({
     return <BonfidaBotDetailsCard key={key} {...props} />;
   } else if (isSerumInstruction(transactionIx)) {
     return <SerumDetailsCard key={key} {...props} />;
+  } else if (isMangoInstruction(transactionIx)) {
+    return <MangoDetailsCard key={key} {...props} />;
   } else if (isTokenSwapInstruction(transactionIx)) {
     return <TokenSwapDetailsCard key={key} {...props} />;
   } else if (isTokenLendingInstruction(transactionIx)) {
